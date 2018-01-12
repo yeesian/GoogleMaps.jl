@@ -25,10 +25,10 @@ To get an API key:
  1. Visit https://developers.google.com/console and log in with a Google Account.
  2. Select one of your existing projects, or create a new project.
  3. Enable the API(s) you want to use. GoogleMaps.jl accesses the following APIs:
-    * Directions API
-    * Geocoding API
-    * Places API
-    * Roads API
+    * [Directions API]
+    * [Geocoding API]
+    * [Places API]
+    * [Roads API]
  4. Create a new **Server key**.
  5. If you'd like to restrict requests to a specific IP address, do so now.
 
@@ -56,11 +56,11 @@ If you develop a Google Maps Directions API application, you must make available
 a Terms of Use and a Privacy Policy with your application which meets the
 guidelines outlined in section 9.3 of the Google Maps APIs Terms of Service:
 
-    * Your Terms of Use and Privacy Policy must be publicly available.
-    * You must explicitly state in your application's Terms of Use that by using
-        your application, users are bound by Google’s Terms of Service.
-    * You must notify users in your Privacy Policy that you are using the Google
-        Maps API(s) and incorporate by reference the Google Privacy Policy.
+* Your Terms of Use and Privacy Policy must be publicly available.
+* You must explicitly state in your application's Terms of Use that by using
+    your application, users are bound by Google’s Terms of Service.
+* You must notify users in your Privacy Policy that you are using the Google
+    Maps API(s) and incorporate by reference the Google Privacy Policy.
 
 [apikey]: https://developers.google.com/maps/faq#keysystem
 [directions-key]: https://developers.google.com/maps/documentation/directions/get-api-key#key
