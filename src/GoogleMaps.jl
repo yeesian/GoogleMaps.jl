@@ -1,5 +1,13 @@
 module GoogleMaps
 
-# package code goes here
+    import JSON, Requests, ImageMagick
 
-end # module
+    include("utils.jl")
+    include("directions.jl")
+    include("geocode.jl")
+    include("nearby.jl")
+    include("search.jl")
+    include("details.jl")
+    include("photos.jl")
+
+end
