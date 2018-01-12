@@ -2,13 +2,10 @@
 Returns a Dict corresponding to the results of querying `service`, where
 
 ## Parameters
-
-    *`service`: one of the Google Maps API (`geocode` or `directions`)
+* `service`: one of the Google Maps API (e.g. `geocode` or `directions`)
 
 ## Keyword Arguments
-
-    Corresponds to parameters that are passed to the REST-ful API.
-
+Often corresponds to parameters that are passed to the REST-ful API.
 """
 function requestjson(service::String; kwargs...)
     result = Requests.get(

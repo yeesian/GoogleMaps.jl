@@ -11,12 +11,15 @@ function nearby(; kwargs...)
 end
 
 """
-Returns a list of places around a given location
+Returns a list of places around a location within the given radius.
 
 ## Description
+
 A Nearby Search lets you search for places within a specified area. You can
 refine your search request by supplying keywords or specifying the type of
 place you are searching for.
+
+https://developers.google.com/places/web-service/search#PlaceSearchRequests
 
 ## Parameters
 
@@ -45,7 +48,6 @@ place you are searching for.
         distance from the specified location. When distance is specified, one or
         more of keyword, name, or type is required.
 * `type`: Restricts the results to places matching the specified type.
-
 
 """
 function nearby(key::String, lon::Real, lat::Real, radius::Real; kwargs...)
