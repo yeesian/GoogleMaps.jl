@@ -1,6 +1,3 @@
-
-# https://developers.google.com/places/web-service/search
-
 function nearby(; kwargs...)
     resultjson = requestjson("place/nearbysearch"; kwargs...)
     if resultjson["status"] == "OK"
@@ -57,5 +54,3 @@ end
 
 nearby(key::String, lonlat::Tuple{Float64,Float64}, radius::Real; kwargs...) =
     nearby(key, lonlat[1], lonlat[2], radius; kwargs...)
-
-# results2 = GoogleMaps.nearby("AIzaSyDuGVOl_C0G8vGT8buABSZcYNl8X7Dhho4", (151.1957362,-33.8670522),500, keyword="cruise")
