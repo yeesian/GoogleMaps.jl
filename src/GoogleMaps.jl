@@ -9,5 +9,6 @@ module GoogleMaps
     include("search.jl")
     include("details.jl")
     include("photos.jl")
+    include("matchroads.jl")
 
 end

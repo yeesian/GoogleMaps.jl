@@ -7,14 +7,17 @@ Returns a Dict corresponding to the results of querying `service`, where
 ## Keyword Arguments
 Often corresponds to parameters that are passed to the REST-ful API.
 """
-function requestjson(service::String; kwargs...)
-    result = Requests.get(
-        "https://maps.googleapis.com/maps/api/$service/json";
-        query = Dict(kwargs)
+function requestjson(
+        service::String,
+        api::String = "https://maps.googleapis.com/maps/api/",
+        ext::String = "/json";
+        kwargs...
     )
+    result = Requests.get(string(api,service,ext); query = Dict(kwargs))
     resultjson = JSON.parse(Requests.readstring(result))
     info("REQUEST:{\"uri\":\"", result.request.value.uri, "\", ",
-                  "\"status\": \"", resultjson["status"], "\"}")
+                  "\"status\": \"", Requests.statuscode(result), "\"}")
+    Requests.statuscode(result) == 400 && warn("ERROR:",resultjson["error"])
     resultjson
 end
 
