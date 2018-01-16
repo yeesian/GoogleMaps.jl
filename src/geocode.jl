@@ -27,9 +27,9 @@ end
 function geocode(;kwargs...)
     resultjson = requestjson("geocode"; kwargs...)
     if resultjson["status"] == "OK"
-        return resultjson["results"]
+        return getlocation.(resultjson["results"])
     else
-        return []
+        return Location[]
     end
 end
 
