@@ -17,9 +17,9 @@ end
 function directions(;kwargs...)
     resultjson = requestjson("directions"; kwargs...)
     if resultjson["status"] == "OK"
-        return resultjson["routes"]
+        return getroutes(resultjson["routes"])
     else
-        return []
+        return Route[]
     end
 end
 
@@ -61,7 +61,7 @@ function directions(
 end
 
 directions(origin::String, dest::String; kwargs...) =
-    transitdirections(origin, dest, now(); kwargs...)
+    directions(origin, dest, now(); kwargs...)
 
 function directions(
         lonlat_origin::Tuple{Float64,Float64},
@@ -69,7 +69,7 @@ function directions(
         args...;
         kwargs...
     )
-    transitdirections(
+    directions(
         string(lonlat_origin[2], ",", lonlat_origin[1]),
         string(lonlat_dest[2], ",", lonlat_dest[1]),
         args...; kwargs...
