@@ -1,11 +1,29 @@
+mutable struct Points
+    lonlats::Vector{Tuple{Float64,Float64}}
+    placeids::Vector{String}
+    originalindex::Vector{Int}
+end
 
-function matchroads(snap::Bool; kwargs...)
+function getpoints(points::Vector, originalindex::Vector{Int})
+    for (i,p) in enumerate(points)
+        if haskey(p, "originalIndex")
+            originalindex[p["originalIndex"]+1] = i
+        end
+    end
+    Points(
+        [(l["location"]["longitude"],l["location"]["latitude"]) for l in points],
+        [l["placeId"] for l in points],
+        originalindex
+    )
+end
+
+function matchroads(snap::Bool, npoints::Int; kwargs...)
     resultjson = if snap
         requestjson("snapToRoads", "https://roads.googleapis.com/v1/", ""; kwargs...)
     else
         requestjson("nearestRoads", "https://roads.googleapis.com/v1/", ""; kwargs...)
     end
-    resultjson["snappedPoints"]
+    getpoints(resultjson["snappedPoints"], fill(0, npoints))
 end
 
 """
@@ -45,13 +63,13 @@ function matchroads(
     )
     npoints = length(lonlats)
     if npoints > 100
-        warn("The API takes up to 100 lon,lats. Ignoring the rest of $npoints")
+        warn("The API takes up to 100 lon,lats. Ignoring coords 101...$npoints")
         npoints = min(maxcoords, npoints)
     end
-    points = join([string(lonlat[i][2],",",lonlat[i][1]) for i in 1:npoints], "|")
+    points = join([string(lonlats[i][2], ",", lonlats[i][1]) for i in 1:npoints], "|")
     if snap
-        matchroads(snap, key = key, path = points; kwargs...)
+        matchroads(snap, npoints, key = key, path = points; kwargs...)
     else
-        matchroads(snap, key = key, points = points; kwargs...)
+        matchroads(snap, npoints, key = key, points = points; kwargs...)
     end
 end
