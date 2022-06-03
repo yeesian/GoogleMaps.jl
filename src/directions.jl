@@ -27,9 +27,9 @@ end
 Returns a vector of transit routes under the GoogleMaps Directions API.
 
 ## Parameters
-    
-* `origin`: the origin location. 
-* `dest`: the destination location. 
+
+* `origin`: the origin location.
+* `dest`: the destination location.
 * [optional] `datetime`: defaults to the current time
 
 See https://developers.google.com/maps/documentation/directions/intro
@@ -44,24 +44,12 @@ for details on the origin and destination specification.
 """
 function directions(
         origin::String,
-        dest::String,
-        datetime::DateTime;
-        key::String = "",
+        destination::String;
         mode::String = "transit",
         alternatives::Bool = true,
-        kwargs...
-    )
-    key != "" && push!(kwargs, (:key, key))
-    push!(kwargs, (:departure_time, string(round(Int,Dates.datetime2unix(datetime)))))
-    push!(kwargs, (:mode, mode))
-    push!(kwargs, (:alternatives, string(alternatives)))
-    push!(kwargs, (:origin, origin))
-    push!(kwargs, (:destination, dest))
-    directions(; kwargs...)
+        kwargs...)
+    directions(; alternatives = string(alternatives), origin,destination,kwargs...)
 end
-
-directions(origin::String, dest::String; kwargs...) =
-    directions(origin, dest, now(); kwargs...)
 
 function directions(
         lonlat_origin::Tuple{Float64,Float64},
@@ -108,7 +96,7 @@ function getroutes(
     for r in routes
         route = Route()
         route.copyrights = r["copyrights"]; route.misc = Dict()
-        
+
         minlon = r["bounds"]["southwest"]["lng"]
         minlat = r["bounds"]["southwest"]["lat"]
         maxlon = r["bounds"]["northeast"]["lng"]
@@ -117,7 +105,7 @@ function getroutes(
 
         @assert length(r["legs"]) == 1 # no waypoints
         leg = r["legs"][1]
-        
+
         route.startaddress = leg["start_address"]
         route.endaddress = leg["end_address"]
 
@@ -126,10 +114,10 @@ function getroutes(
         route.travelmode = [s["travel_mode"] for s in steps]
         route.traveltime = [s["duration"]["value"] for s in steps]
         route.traveldist = [s["distance"]["value"] for s in steps]
-        
+
         route.instructions = instructions ? [s["html_instructions"] for s in steps] : []
         route.polylines = [decodepolyline(s["polyline"]["points"]) for s in steps]
-        
+
         startlon = steps[1]["start_location"]["lng"]
         startlat = steps[1]["start_location"]["lat"]
         route.lonlat = [(startlon,startlat)]
