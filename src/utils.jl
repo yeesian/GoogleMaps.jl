@@ -27,7 +27,7 @@ function requestimage(service::String; kwargs...)
     )
     #@info("REQUEST:{\"uri\":\"", HTTP.Messages.uri(result.request), "\", ",
     #              "\"status\": \"", result.status, "\"}")
-    ImageMagick.readblob(result.data)
+    ImageMagick.readblob(result.body)
 end
 
 """
