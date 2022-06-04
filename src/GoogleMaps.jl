@@ -1,6 +1,6 @@
 module GoogleMaps
-
-    import JSON, Requests, ImageMagick
+    using Dates
+    import JSON, HTTP, ImageMagick
 
     include("utils.jl")
     include("directions.jl")
@@ -10,5 +10,5 @@ module GoogleMaps
     include("details.jl")
     include("photos.jl")
     include("matchroads.jl")
-
+    include("distancematrix.jl")
 end

@@ -13,21 +13,21 @@ function requestjson(
         ext::String = "/json";
         kwargs...
     )
-    result = Requests.get(string(api,service,ext); query = Dict(kwargs))
-    resultjson = JSON.parse(Requests.readstring(result))
-    info("REQUEST:{\"uri\":\"", result.request.value.uri, "\", ",
-                  "\"status\": \"", Requests.statuscode(result), "\"}")
-    Requests.statuscode(result) == 400 && warn("ERROR:",resultjson["error"])
+    result = HTTP.get(string(api,service,ext); query = Dict(kwargs...))
+    resultjson = JSON.parse(String(result.body))
+    #@info("REQUEST:{\"uri\":\"", HTTP.Messages.uri(result.request), "\", ",
+    #              "\"status\": \"", result.status, "\"}")
+    result.status == 400 && @warn("ERROR:",resultjson["error"])
     resultjson
 end
 
 function requestimage(service::String; kwargs...)
-    result = Requests.get(
+    result = HTTP.get(
         "https://maps.googleapis.com/maps/api/$service"; query = Dict(kwargs)
     )
-    info("REQUEST:{\"uri\":\"", result.request.value.uri, "\", ",
-                  "\"status\": \"", Requests.statuscode(result), "\"}")
-    ImageMagick.readblob(result.data)
+    #@info("REQUEST:{\"uri\":\"", HTTP.Messages.uri(result.request), "\", ",
+    #              "\"status\": \"", result.status, "\"}")
+    ImageMagick.readblob(result.body)
 end
 
 """
@@ -61,3 +61,5 @@ function decodepolyline(polyline::Vector{UInt8})
 end
 
 decodepolyline(s::String) = decodepolyline(Vector{UInt8}(s))
+
+googletime(d::DateTime) =  string(round(Int,Dates.datetime2unix(d)));
